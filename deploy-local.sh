@@ -28,15 +28,27 @@ create_replace_lambda() {
 
 mkdir -p build/
 zip -j build/example-handler.zip example-handler/index.js
+zip -j build/cgp-executor.zip cgp-executor/handler.py
+
+# create_replace_lambda \
+#     example \
+#     nodejs18.x \
+#     fileb://build/example-handler.zip \
+#     index.handler
+
+# # Run a test:
+# awslocal lambda invoke --function-name example \
+#     --cli-binary-format raw-in-base64-out \
+#     --payload '{"body": "{\"num1\": \"10\", \"num2\": \"10\"}" }' \
+#     output.txt
 
 create_replace_lambda \
-    example \
-    nodejs18.x \
-    fileb://build/example-handler.zip \
-    index.handler
+    cgp-executor \
+    python3.12 \
+    fileb://build/cgp-executor.zip \
+    handler.lambda_handler
 
-# Run a test:
-awslocal lambda invoke --function-name example \
+awslocal lambda invoke --function-name cgp-executor \
     --cli-binary-format raw-in-base64-out \
     --payload '{"body": "{\"num1\": \"10\", \"num2\": \"10\"}" }' \
     output.txt
