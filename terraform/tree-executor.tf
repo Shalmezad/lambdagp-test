@@ -1,10 +1,37 @@
 locals {
+  tree_executor_path_root = "../tree-executor"
   tree_executor_zip_path = "${path.module}/../build/tree_executor.zip"
 }
 
+resource "null_resource" "install_tree_executor_dependencies" {
+  provisioner "local-exec" {
+    command = "pip install -r ${local.tree_executor_path_root}/requirements.txt -t ${local.tree_executor_path_root}/"
+  }
+  
+  triggers = {
+    dependencies_versions = filemd5("${local.tree_executor_path_root}/requirements.txt")
+    source_versions = filemd5("${local.tree_executor_path_root}/handler.py")
+  }
+}
+
+resource "random_uuid" "lambda_src_hash" {
+  keepers = {
+    for filename in setunion(
+      fileset(local.tree_executor_path_root, "handler.py"),
+      fileset(local.tree_executor_path_root, "requirements.txt")
+    ):
+      filename => filemd5("${local.tree_executor_path_root}/${filename}")
+  }
+}
+
 data "archive_file" "tree_executor_zip" {
+  depends_on = [null_resource.install_tree_executor_dependencies]
+  excludes   = [
+    "__pycache__",
+    "venv",
+  ]
+  source_dir  = local.tree_executor_path_root
   type        = "zip"
-  source_file = "${path.module}/../tree-executor/handler.py"
   output_path = local.tree_executor_zip_path
 }
 

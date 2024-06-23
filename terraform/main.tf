@@ -8,13 +8,23 @@ terraform {
       source = "hashicorp/aws"
       version = "~> 4.16"
     }
+    null = {
+      source = "hashicorp/null"
+      version = "3.2.2"
+    }
+    random = {
+      source = "hashicorp/random"
+      version = "3.6.2"
+    }
   }
 }
+
+provider "archive" {}
 
 provider "aws" {
   region = "us-west-2"
 }
 
+provider "null" {}
 
-provider "archive" {
-}
+provider "random" {}
