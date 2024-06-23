@@ -1,5 +1,7 @@
 import unittest
+from aws_lambda_powertools.utilities.validation import validate
 from handler import TreeExecutor, lambda_handler
+import schemas
 
 
 class TestTreeExecutor(unittest.TestCase):
@@ -42,12 +44,41 @@ class TestTreeExecutor(unittest.TestCase):
 
 
 class TestHandler(unittest.TestCase):
-    def test_handler(self):
+    def test_handler_output_values(self):
         # We're going to test (I0 + 2) * I1:
         gene = ["I0", "2", "+", "I1", "*"]
         inputs = [3, 4]
-        event = {"gene": gene, "inputs": inputs, "config": {}}
-        self.assertAlmostEqual(lambda_handler(event, {})[0], 20.0)
+        event = {
+            "cases": [
+                {
+                    "case_metadata": {},
+                    "case_input": inputs
+                }
+            ],
+            "individual": gene,
+            "config": {}
+        }
+        result = lambda_handler(event, {})
+        # Need to unwrap a bit:
+        output = result["cases"][0]["case_output"][0]
+        self.assertAlmostEqual(output, 20.0)
+    
+    def test_handler_output_schema(self):
+        # We're going to test (I0 + 2) * I1:
+        gene = ["I0", "2", "+", "I1", "*"]
+        inputs = [3, 4]
+        event = {
+            "cases": [
+                {
+                    "case_metadata": {},
+                    "case_input": inputs
+                }
+            ],
+            "individual": gene,
+            "config": {}
+        }
+        result = lambda_handler(event, {})
+        validate(event=result, schema=schemas.OUTPUT)
 
 
 if __name__ == '__main__':

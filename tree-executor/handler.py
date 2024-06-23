@@ -1,3 +1,7 @@
+from aws_lambda_powertools.utilities.validation import validator
+
+import schemas
+
 
 class TreeExecutor:
     def __init__(self, program, config):
@@ -30,8 +34,9 @@ class TreeExecutor:
         else:
             raise 'Unknown operator {}'.format(operand)
 
-    def evaluate(self, inputs):
+    def evaluate(self, case):
         # Go through the tree:
+        inputs = case["case_input"]
         stack = []
         for node in self.program:
             if self.is_input_node(node):
@@ -43,14 +48,24 @@ class TreeExecutor:
             else:
                 # Should be a constant:
                 stack.append(float(node))
-        return stack
+        return {
+            "case_output": stack,
+            # Reflect this so problem can use to track what it needs for this case:
+            "case_metadata": case["case_metadata"]
+        }
 
 
+@validator(inbound_schema=schemas.INPUT)
 def lambda_handler(event, context):
     # Gene will be an array of tree nodes in POSTFIX notation
     # ie: (A + B) * C will be ['A', 'B', '+', 'C', '*']
-    gene = event['gene']
+    gene = event['individual']
     config = event['config']
-    inputs = event['inputs']
+    cases = event['cases']
     executor = TreeExecutor(gene, config)
-    return executor.evaluate(inputs)
+    output_cases = [executor.evaluate(case) for case in cases]
+    return {
+        "cases": output_cases,
+        "individual": gene,
+        "config": config
+    }
