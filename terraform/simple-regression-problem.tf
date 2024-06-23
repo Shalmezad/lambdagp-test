@@ -19,7 +19,7 @@ resource "aws_lambda_function" "simple_regression_problem_init" {
   filename         = local.simple_regression_problem_init_zip_path
   function_name    = "simple_regression_problem_init"
   role             = aws_iam_role.iam_for_lambda_tf.arn
-  handler          = "simple-regression-problem-init.init"
+  handler          = "handler-init.init"
   source_code_hash = data.archive_file.simple_regression_problem_init_zip.output_base64sha256
   runtime          = "python3.7"
 }
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "simple_regression_problem_step" {
   filename         = local.simple_regression_problem_step_zip_path
   function_name    = "simple_regression_problem_step"
   role             = aws_iam_role.iam_for_lambda_tf.arn
-  handler          = "simplle-regression-problem-step.step"
+  handler          = "handler-step.step"
   source_code_hash = data.archive_file.simple_regression_problem_step_zip.output_base64sha256
   runtime          = "python3.7"
 }

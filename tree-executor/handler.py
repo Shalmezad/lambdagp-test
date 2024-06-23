@@ -17,6 +17,9 @@ class TreeExecutor:
     def get_input(self, node, inputs):
         node_idx_str = node.replace('I', '')
         node_idx = int(node_idx_str)
+        # NOTE: There is a chance we're trying to refer to an idx that's out of range
+        # To help prevent that, we're going to wrap:
+        node_idx = node_idx % len(inputs)
         return inputs[node_idx]
 
     def operate(self, lhs, rhs, operand):

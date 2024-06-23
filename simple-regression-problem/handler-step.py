@@ -14,7 +14,7 @@ def measure_fitness(case):
     }
 
 
-def step(event):
+def step(event, context):
     # Step will receive the latest output,
     # and should step the world, and either:
     # a) Return a new set of input cases

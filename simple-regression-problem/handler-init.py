@@ -13,7 +13,7 @@ def make_case(input):
     }
 
 
-def init(event):
+def init(event, context):
     # Initialize should set up anything needed for measuring an individual
     # (ex: regression problems, set up the world)
     # And also return the first set of test cases for the problem.

@@ -62,7 +62,7 @@ class TestHandler(unittest.TestCase):
         # Need to unwrap a bit:
         output = result["cases"][0]["case_output"][0]
         self.assertAlmostEqual(output, 20.0)
-    
+
     def test_handler_output_schema(self):
         # We're going to test (I0 + 2) * I1:
         gene = ["I0", "2", "+", "I1", "*"]

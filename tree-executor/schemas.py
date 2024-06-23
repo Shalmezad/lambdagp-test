@@ -1,6 +1,6 @@
 INPUT = {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://shalmezad.com/github/lambdagp-test/tree-executor/input-schema.json",
+    "$id": "https://shalmezad.com/github/lambdagp-test/tree-executor/input-schema.json",  # noqa: E501
     "title": "Tree GP Input",
     "description": "Input validation schema for tree GP executor",
     "type": "object",
@@ -49,7 +49,7 @@ INPUT = {
 
 OUTPUT = {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://shalmezad.com/github/lambdagp-test/tree-executor/output-schema.json",
+    "$id": "https://shalmezad.com/github/lambdagp-test/tree-executor/output-schema.json",  # noqa: E501
     "title": "Tree GP Output",
     "description": "Output validation schema for tree GP executor",
     "type": "object",

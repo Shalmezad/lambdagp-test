@@ -8,7 +8,7 @@
       "OutputPath": "$.Payload",
       "Parameters": {
         "Payload.$": "$",
-        "FunctionName": "arn:aws:lambda::123456789012:function:myFunction:1"
+        "FunctionName": "${init_problem_lambda_arn}"
       },
       "Retry": [
         {
@@ -31,7 +31,7 @@
       "OutputPath": "$.Payload",
       "Parameters": {
         "Payload.$": "$",
-        "FunctionName": "arn:aws:lambda::123456789012:function:myFunction:1"
+        "FunctionName": "${gp_executor_lambda_arn}"
       },
       "Retry": [
         {
@@ -54,7 +54,7 @@
       "OutputPath": "$.Payload",
       "Parameters": {
         "Payload.$": "$",
-        "FunctionName": "arn:aws:lambda::123456789012:function:myFunction:1"
+        "FunctionName": "${step_problem_lambda_arn}"
       },
       "Retry": [
         {
