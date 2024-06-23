@@ -50,7 +50,7 @@ class TreeExecutor:
                 stack.append(float(node))
         return {
             "case_output": stack,
-            # Reflect this so problem can use to track what it needs for this case:
+            # Reflect the metadata for problem tracking:
             "case_metadata": case["case_metadata"]
         }
 
