@@ -8,15 +8,21 @@ INPUT = {
     "properties": {
         "config": {
             "type": "object",
-            "required": ["tree_max_depth", "num_inputs"],
+            "required": ["tree_builder"],
             "properties": {
-                "tree_max_depth": {
-                    "type": "integer",
-                    "minimum": 1
-                },
-                "num_inputs": {
-                    "type": "integer",
-                    "minimum": 1
+                "tree_builder": {
+                    "type": "object",
+                    "required": ["tree_max_depth", "num_inputs"],
+                    "properties": {
+                        "tree_max_depth": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "num_inputs": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    }
                 }
             }
         }
@@ -24,8 +30,10 @@ INPUT = {
     "examples": [
         {
             "config": {
-                "max_tree_depth": 4,
-                "num_inputs": 2
+                "tree_builder": {
+                    "max_tree_depth": 4,
+                    "num_inputs": 2
+                }
             }
         }
     ],

@@ -1,21 +1,12 @@
 from __future__ import annotations
-from typing import TypedDict, Any
 from abc import ABC, abstractmethod
 import random
+import uuid
 
 from aws_lambda_powertools.utilities.validation import validator
 
 import schemas
-
-
-class TreeBuilderConfig(TypedDict):
-    max_tree_depth: int
-    num_inputs: int
-
-
-class TreeBuilderEvent(TypedDict):
-    config: TreeBuilderConfig
-    individual: Any
+from component_types import TreeBuilderEvent, TreeBuilderConfig
 
 
 class TreeNode(ABC):
@@ -109,8 +100,17 @@ class TreeBuilder:
 
 @validator(inbound_schema=schemas.INPUT)
 def lambda_handler(event: TreeBuilderEvent, context):
-    """Builds a single individual, returns as event["individual"]"""
-    treeBuilder = TreeBuilder(event["config"])
+    """Builds a single individual, returns in event["individuals"]"""
+    config = event["config"]
+    metadata = event["metadata"]
+    # Make our tree:
+    treeBuilder = TreeBuilder(event["config"]["tree_builder"])
     tree = treeBuilder.build()
-    event["individual"] = tree
-    return event
+    tree_id = str(uuid.uuid4())
+    return {
+        "config": config,
+        "metadata": metadata,
+        "individuals": {
+            tree_id: tree
+        }
+    }
