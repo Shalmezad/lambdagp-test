@@ -14,7 +14,8 @@ class TestSimplePopulationBuilderSetupMetadata(unittest.TestCase):
         new_metadata = setup_metadata({})
         self.assertIn("simple_population_builder", new_metadata)
         self.assertIn("population", new_metadata["simple_population_builder"])
-        self.assertEqual(new_metadata["simple_population_builder"]["population"], {})
+        population = new_metadata["simple_population_builder"]["population"]
+        self.assertEqual(population, {})
 
     def test_leaves_existing_component_metadata(self):
         existing_metadata = {
@@ -25,7 +26,8 @@ class TestSimplePopulationBuilderSetupMetadata(unittest.TestCase):
             }
         }
         new_metadata = setup_metadata(existing_metadata)
-        self.assertEqual(new_metadata["simple_population_builder"]["population"]["foo"], "bar")
+        population = new_metadata["simple_population_builder"]["population"]
+        self.assertEqual(population["foo"], "bar")
 
 
 class TestSimplePopulationBuilderLambdaHandler(unittest.TestCase):

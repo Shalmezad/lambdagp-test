@@ -1,37 +1,19 @@
-from typing import TypedDict, Any, Dict, NotRequired
+
 
 from aws_lambda_powertools.utilities.validation import validator
 
 import schemas
-
-
-class SimplePopulationBuilderConfig(TypedDict):
-    population_size: int
-
-
-class Config(TypedDict):
-    simple_population_builder: SimplePopulationBuilderConfig
-
-
-class SimplePopulationBuilderMetadata(TypedDict):
-    population: NotRequired[Dict[str, Any]]
-
-
-class Metadata(TypedDict):
-    simple_population_builder: NotRequired[SimplePopulationBuilderMetadata]
-
-
-class SimplePopulationBuilderEvent(TypedDict):
-    # Individuals will only exist
-    # if we're coming from an individual builder component
-    individuals: NotRequired[Dict[str, Any]]
-    config: Config
-    metadata: NotRequired[Metadata]
+from component_types import (
+    Metadata,
+    SimplePopulationBuilderMetadata,
+    SimplePopulationBuilderEvent
+    )
 
 
 def setup_metadata(metadata: Metadata):
     if "simple_population_builder" not in metadata:
-        metadata["simple_population_builder"] = SimplePopulationBuilderMetadata()
+        new_meta = SimplePopulationBuilderMetadata()
+        metadata["simple_population_builder"] = new_meta
     if "population" not in metadata["simple_population_builder"]:
         metadata["simple_population_builder"]['population'] = {}
 
