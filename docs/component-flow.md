@@ -86,7 +86,7 @@ This component is responsible for executing an individual on given input.
 
 This receives `cases` and `individuals` from Individual Measurer
 
-This returns `cases` which is the output for each individual on each provided case
+This returns `case_results` which is a dictionary. Keys are `individual_ids`. Values are dictionaries. These value dictionaries have `case_id` keys and case output values
 
 ## Generation Builder
 
