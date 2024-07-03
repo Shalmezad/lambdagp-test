@@ -63,3 +63,22 @@ Keys throughout will be `snake_case`
 These keys are used in a number of different components:
 
 * `individuals` / `population` / `children` - These will be dictionaries, where the key is a globally unique id (such as version 4 UUIDs) for that individual, and the value will be the genotype of the individual. Anything that creates a new individual (be it a brand new one or a variation of existing) should create a new unique id for that individual.
+* `cases` - This will be a dictionary, where key is the case id (relevant to the problem). The value will be an array of values (either inputs or outputs depending on where it's used). The problem is responsible for maintaining it's metadata to keep track of ids and what they represent (problem inputs, world state, etc)
+* `fitnesses` - This will be a dictionary, where key is an individual id, and values are another dictionary. The value dictionary keys are case_id, and values are fitness measurements.
+
+### Fitnesses example
+
+```json
+{
+    "fitnesses": {
+        "individual_f": {
+            "case_1": 3.14,
+            "case_2": 42,
+        },
+        "individual_g": {
+            "case_1": 7,
+            "case_2": 9999.9
+        }
+    }
+}
+```
