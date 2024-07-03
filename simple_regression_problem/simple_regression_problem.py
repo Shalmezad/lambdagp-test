@@ -19,7 +19,9 @@ def measure_fitness(cases: Dict[str, List[float]]) -> Dict[str, float]:
     return fitnesses
 
 
-def measure_fitnesses(case_results: Dict[str, Dict[str, List[float]]]) -> Dict[str, Dict[str, float]]:
+def measure_fitnesses(
+        case_results: Dict[str, Dict[str, List[float]]]
+        ) -> Dict[str, Dict[str, float]]:
     # Alright, we have our ind_id: {case_id: [outputs]}
     # We need to measure each fitness:
     fitnesses = {}
@@ -41,6 +43,7 @@ def handle_executor_event(event: SimpleRegressionProblemEvent):
         "is_done": True,
         "fitnesses": fitnesses
     }
+
 
 def handle_generation_event(event: SimpleRegressionProblemEvent):
     """Handles an event from a Generation Measurer component"""
