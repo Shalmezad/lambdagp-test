@@ -36,7 +36,7 @@ def lambda_handler(event: RMSETournamentSelectorEvent, context):
     return {
         "config": config,
         "metadata": event["metadata"],
-        "individuals": {
+        "parents": {
             best_id: event["population"][best_id]
         }
     }
