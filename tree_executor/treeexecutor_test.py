@@ -1,6 +1,6 @@
 import unittest
 from aws_lambda_powertools.utilities.validation import validate
-from treeexecutor import TreeExecutor, lambda_handler
+from tree_executor import TreeExecutor, lambda_handler
 import schemas
 
 
