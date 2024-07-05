@@ -1,6 +1,3 @@
-
-
-from typing import Any, Dict
 import random
 import uuid
 
@@ -13,7 +10,7 @@ def handle_generation_builder_event(event: CGPMutatorEvent):
     return {
         "config": event["config"],
         "metadata": event["metadata"],
-        "popupulation": event["population"],
+        "population": event["population"],
         "fitnesses": event["fitnesses"],
         "is_done": False
     }

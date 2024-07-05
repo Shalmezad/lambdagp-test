@@ -20,7 +20,7 @@ def handle_generation_builder_event(event: CrossoverBuilderEvent):
     return {
         "config": event["config"],
         "metadata": metadata,
-        "popupulation": population,
+        "population": population,
         "fitnesses": fitnesses,
         "is_done": False
     }
@@ -72,7 +72,7 @@ def handle_parent_selector_event(event: CrossoverBuilderEvent):
         return {
             "config": event["config"],
             "metadata": metadata,
-            "popupulation": metadata["crossover_builder"]["population"],
+            "population": metadata["crossover_builder"]["population"],
             "fitnesses": metadata["crossover_builder"]["fitnesses"],
             "is_done": False
         }

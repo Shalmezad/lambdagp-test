@@ -16,7 +16,7 @@ def handle_generation_measurer_event(event: SimpleGenerationBuilderEvent):
     return {
         "config": event["config"],
         "metadata": metadata,
-        "popupulation": population,
+        "population": population,
         "fitnesses": fitnesses,
         "is_done": False
     }

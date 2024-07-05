@@ -1,6 +1,9 @@
 #!/bin/bash
 
-ARN=$(cat ../test/execution-data.json| jq -r .executionArn)
+
+SCRIPT_ROOT=${BASH_SOURCE%/*}
+
+ARN=$(cat $SCRIPT_ROOT/execution-data.json| jq -r .executionArn)
 awslocal stepfunctions \
     describe-execution \
     --execution-arn $ARN \
