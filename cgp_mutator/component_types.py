@@ -1,4 +1,8 @@
-from typing import TypedDict, Any, Dict, NotRequired
+import sys
+if sys.version_info < (3, 11):
+    from typing_extensions import TypedDict, Any, Dict, NotRequired
+else:
+    from typing import TypedDict, Any, Dict, NotRequired
 
 
 class CGPMutatorConfig(TypedDict):

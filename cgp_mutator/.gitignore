@@ -1,0 +1,4 @@
+# So because TF requires pip installing the packages locally:
+**/
+THIRD-PARTY-LICENSES
+typing_extensions.py
