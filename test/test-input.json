@@ -20,6 +20,16 @@
         },
         "simple_generation_builder": {
             "population_size": 2
+        },
+        "rmse_tournament_selector": {
+            "tournament_size": 2
+        },
+        "cgp_mutator": {
+            "num_inputs": 1,
+            "num_middle_nodes": 25,
+            "num_outputs": 1,
+            "instruction_set_length": 4,
+            "mutation_rate": 0.1
         }
     }
 }
