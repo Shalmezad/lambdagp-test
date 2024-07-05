@@ -15,7 +15,7 @@ def handle_generation_runner_event(event: SimpleGenerationMeasurerEvent):
     return {
         "config": event["config"],
         "metadata": metadata,
-        "is_done": True,
+        "is_done": False,
         "individuals": {
             to_test_id: population[to_test_id]
         }
@@ -53,7 +53,7 @@ def handle_individual_measurer_event(event: SimpleGenerationMeasurerEvent):
         return {
             "config": event["config"],
             "metadata": metadata,
-            "is_done": True,
+            "is_done": False,
             "individuals": {
                 to_test_id: population[to_test_id]
             }
