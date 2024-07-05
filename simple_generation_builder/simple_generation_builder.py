@@ -8,6 +8,7 @@ def handle_generation_measurer_event(event: SimpleGenerationBuilderEvent):
     metadata = event["metadata"]
     population = event["population"]
     fitnesses = event["fitnesses"]
+    metadata["simple_generation_builder"] = {}
     metadata["simple_generation_builder"]["previous_population"] = population
     metadata["simple_generation_builder"]["fitnesses"] = fitnesses
     metadata["simple_generation_builder"]["new_population"] = {}
