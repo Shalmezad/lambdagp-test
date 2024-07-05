@@ -1,0 +1,282 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Population Builder",
+  "States": {
+    "Population Builder": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${population_builder_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is Population Building Done"
+    },
+    "Is Population Building Done": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.is_done",
+          "BooleanEquals": true,
+          "Next": "Generation Runner"
+        }
+      ],
+      "Default": "Individual Builder"
+    },
+    "Generation Runner": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${generation_runner_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is GP Run Done"
+    },
+    "Is GP Run Done": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.is_done",
+          "BooleanEquals": true,
+          "Next": "Success"
+        }
+      ],
+      "Default": "Generation Measurer"
+    },
+    "Success": {
+      "Type": "Succeed"
+    },
+    "Generation Measurer": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${generation_measurer_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is Generation Measuring Done"
+    },
+    "Is Generation Measuring Done": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.is_done",
+          "BooleanEquals": true,
+          "Next": "Generation Builder"
+        }
+      ],
+      "Default": "Individual Measurer"
+    },
+    "Generation Builder": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${generation_builder_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Generation Building Done"
+    },
+    "Generation Building Done": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.is_done",
+          "BooleanEquals": true,
+          "Next": "Generation Runner"
+        }
+      ],
+      "Default": "Child Builder"
+    },
+    "Child Builder": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${child_builder_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Child Building Done"
+    },
+    "Child Building Done": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.is_done",
+          "BooleanEquals": true,
+          "Next": "Generation Builder"
+        }
+      ],
+      "Default": "Individual Selector"
+    },
+    "Individual Selector": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${individual_selector_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Child Builder"
+    },
+    "Individual Measurer": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${individual_measurer_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Is Individual Measuring Done"
+    },
+    "Is Individual Measuring Done": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.is_done",
+          "BooleanEquals": true,
+          "Next": "Generation Measurer"
+        }
+      ],
+      "Default": "Individual Executor"
+    },
+    "Individual Executor": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${individual_executor_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Individual Measurer"
+    },
+    "Individual Builder": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "${individual_builder_lambda_arn}"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Population Builder"
+    }
+  }
+}
