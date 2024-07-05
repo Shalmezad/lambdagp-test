@@ -42,6 +42,6 @@ resource "aws_lambda_function" "python_lambda" {
   role             = var.iam_arn
   handler          = "${var.name}.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  runtime          = "python3.8"
+  runtime          = "python3.10"
 }
 

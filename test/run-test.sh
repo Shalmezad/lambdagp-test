@@ -6,6 +6,6 @@ SCRIPT_ROOT=${BASH_SOURCE%/*}
 awslocal stepfunctions\
     start-execution \
     --region us-west-2 \
-    --state-machine-arn arn:aws:states:us-west-2:000000000000:stateMachine:measure-individual \
+    --state-machine-arn arn:aws:states:us-west-2:000000000000:stateMachine:simple_gp_run \
     --input "$(cat $SCRIPT_ROOT/test-input.json)" \
     > $SCRIPT_ROOT/execution-data.json

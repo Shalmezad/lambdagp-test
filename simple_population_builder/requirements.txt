@@ -1,1 +1,2 @@
 aws-lambda-powertools[validation]
+typing_extensions

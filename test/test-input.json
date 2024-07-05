@@ -1,4 +1,13 @@
 {
-    "individual": ["I0", "2", "+", "I1", "*"],
-    "config": {}
+    "config": {
+        "simple_population_builder": {
+            "population_size": 2
+        },
+        "cgp_builder": {
+            "num_inputs": 1,
+            "num_middle_nodes": 25,
+            "num_outputs": 1,
+            "instruction_set_length": 4
+        }
+    }
 }

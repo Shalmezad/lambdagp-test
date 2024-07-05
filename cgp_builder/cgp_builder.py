@@ -1,6 +1,9 @@
 import random
 import uuid
 
+from aws_lambda_powertools.utilities.validation import validator
+
+import schemas
 from component_types import CGPBuilderConfig, CGPBuilderEvent
 
 
@@ -23,6 +26,7 @@ def build_individual(config: CGPBuilderConfig):
     return nodes
 
 
+@validator(inbound_schema=schemas.INPUT)
 def lambda_handler(event: CGPBuilderEvent, context):
     # We need to build an individual:
     individual = build_individual(event["config"]["cgp_builder"])
