@@ -1,16 +1,20 @@
-from typing import TypedDict, Any, Dict, NotRequired
+import sys
+if sys.version_info < (3, 11):
+    from typing_extensions import TypedDict, Any, Dict, NotRequired
+else:
+    from typing import TypedDict, Any, Dict, NotRequired
 
 
-class SimpleGenerationMeasuererMetadata(TypedDict):
+class SimpleGenerationMeasurerMetadata(TypedDict):
     population: NotRequired[Dict[str, Any]]
     fitnesses: NotRequired[Dict[str, Dict[str, float]]]
 
 
 class Metadata(TypedDict):
-    simple_generation_measuerer: NotRequired[SimpleGenerationMeasuererMetadata]
+    simple_generation_measurer: NotRequired[SimpleGenerationMeasurerMetadata]
 
 
-class SimpleGenerationMeasuererEvent(TypedDict):
+class SimpleGenerationMeasurerEvent(TypedDict):
     config: Any
     metadata: Metadata
     # Two cases:
