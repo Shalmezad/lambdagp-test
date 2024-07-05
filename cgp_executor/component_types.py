@@ -1,4 +1,4 @@
-from typing import TypedDict, Any
+from typing import Dict, TypedDict, Any
 
 
 class CGPExecutorConfig(TypedDict):
@@ -15,3 +15,5 @@ class Config(TypedDict):
 class CGPExecutorEvent(TypedDict):
     config: Config
     metadata: Any
+    cases: Dict[str, list[float]]
+    individuals: Dict[str, list[list[int]]]

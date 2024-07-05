@@ -21,23 +21,23 @@ class CGPExecutor:
     num_mid: int
     num_out: int
 
-    def __init__(self, program: list[str], config: Config):
+    def __init__(self, program: list[list[int]], config: Config):
         self.program = program
         self.config = config
         self.num_in = config["cgp_executor"]["num_inputs"]
         self.num_mid = config["cgp_executor"]["num_middle_nodes"]
         self.num_out = config["cgp_executor"]["num_outputs"]
 
-    def get_node(self, node_idx: int, case: CaseInput) -> float:
+    def get_node(self, node_idx: int, inputs: list[float]) -> float:
         # Is it an input node?
         if node_idx < self.num_in:
-            return case["case_input"][node_idx]
+            return inputs[node_idx]
         # Ok, we're a middle node. Get the node:
         program_node_idx = node_idx - self.num_in
         node = self.program[program_node_idx]
         # 0 is lhs, 1 is rhs, 2 is op:
-        lhs = self.get_node(node[0], case)
-        rhs = self.get_node(node[1], case)
+        lhs = self.get_node(node[0], inputs)
+        rhs = self.get_node(node[1], inputs)
         op = self.config["cgp_executor"]["instruction_set"][node[2]]
         if op == '+':
             return lhs + rhs
@@ -53,41 +53,31 @@ class CGPExecutor:
         else:
             raise AttributeError('Unknown operator {}'.format(op))
 
-    def evaluate(self, case: CaseInput) -> CaseOutput:
+    def evaluate(self, inputs: list[float]) -> list[float]:
         # Go through each of our output nodes:
         outputs = []
         for i in range(self.config["cgp_executor"]["num_outputs"]):
             # Get the idx:
-            program_output_idx = self.num_in + self.num_mid + i
+            program_output_idx = self.num_mid + i
             source_idx = self.program[program_output_idx][0]
-            result = self.get_node(source_idx, case)
+            result = self.get_node(source_idx, inputs)
             outputs.append(result)
-
-
-            if self.is_input_node(node):
-                stack.append(self.get_input(node, inputs))
-            elif self.is_operand(node):
-                rhs = stack.pop()
-                lhs = stack.pop()
-                stack.append(self.operate(lhs, rhs, node))
-            else:
-                # Should be a constant:
-                stack.append(float(node))
-        return {
-            "case_output": outputs,
-            # Reflect the metadata for problem tracking:
-            "case_metadata": case["case_metadata"]
-        }
+        return outputs
 
 
 def lambda_handler(event: CGPExecutorEvent, context):
-    gene = event['individual']
+    individuals = event['individuals']
     config = event['config']
     cases = event['cases']
-    executor = CGPExecutor(gene, config)
-    output_cases = [executor.evaluate(case) for case in cases]
+    case_results = {}
+    for individual_id in individuals:
+        case_results[individual_id] = {}
+        executor = CGPExecutor(individuals[individual_id], config)
+        for case_id in cases:
+            result = executor.evaluate(cases[case_id])
+            case_results[individual_id][case_id] = result
     return {
-        "cases": output_cases,
-        "individual": gene,
-        "config": config
+        "config": config,
+        "metadata": event["metadata"],
+        "case_results": case_results
     }
