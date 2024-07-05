@@ -31,6 +31,5 @@ class TestHandleGenerationRunnerEvent(unittest.TestCase):
         self.assertEqual(result_meta["fitnesses"], {})
 
 
-
 if __name__ == '__main__':
     unittest.main()
